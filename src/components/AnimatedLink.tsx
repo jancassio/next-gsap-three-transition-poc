@@ -1,29 +1,33 @@
 "use client"
 
-import { useAnimatedRouter } from "@/hooks/useAnimatedRouter"
-import Link, { LinkProps } from "next/link"
 import { PropsWithChildren } from "react"
+import { useAnimatedRouter } from "@/hooks/useAnimatedRouter"
 
 type Props = PropsWithChildren<{
-  href: LinkProps["href"]
+  href: string
 }>
 
 export function AnimatedLink(props: Props) {
   const router = useAnimatedRouter()
 
-  const handleClick = () => {
+  const handleClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault()
     if (typeof props.href === "string") {
       router.push(props.href)
       return
     }
 
-    if (typeof props.href === "object" && props.href.pathname) {
-      router.push(props.href.pathname)
+    if (typeof props.href === "object" && props.href) {
+      router.push(props.href)
       return
     }
 
     throw new Error(`Invalid href. The given value was: ${props.href}`)
   }
 
-  return <Link href={props.href} onClick={handleClick} passHref>{props.children}</Link>
+  return (
+    <a href={props.href} onClick={handleClick}>
+      {props.children}
+    </a>
+  )
 }

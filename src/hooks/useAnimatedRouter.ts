@@ -9,6 +9,7 @@ export function useAnimatedRouter() {
   const push = useCallback(
     (path: string) => {
       timeline.add(() => {
+        console.log('[useAnimatedRouter] push', path)
         router.push(path)
       }, '+=1')
       

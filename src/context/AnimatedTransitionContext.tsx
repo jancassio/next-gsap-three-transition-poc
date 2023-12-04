@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 import React, { PropsWithChildren, createContext, useLayoutEffect } from "react"
 
@@ -21,9 +21,12 @@ export function useEnterAnimation(cb: () => gsap.core.Timeline) {
 }
 
 export function useLeaveAnimation(cb: () => gsap.core.Timeline) {
+  const timeline = useAnimatedTransition()
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
+      timeline.addPause()
       timeline.add(cb())
+      timeline.play()
     })
     return () => {
       ctx.kill()

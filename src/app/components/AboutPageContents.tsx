@@ -7,7 +7,7 @@ import {
   useLeaveAnimation,
 } from "@/context/AnimatedTransitionContext"
 
-export function HomePageContents() {
+export function AboutPageContents() {
   const section = useRef<HTMLDivElement>(null)
   const title = useRef<HTMLDivElement>(null)
   const text = useRef<HTMLDivElement>(null)
@@ -30,7 +30,7 @@ export function HomePageContents() {
     <section ref={section} className="my-8">
       <div className="overflow-hidden h-auto">
         <h2 ref={title} className="text-4xl font-bold">
-          Home
+          About
         </h2>
       </div>
       <div className="overflow-hidden h-auto">
