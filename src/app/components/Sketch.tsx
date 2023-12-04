@@ -26,22 +26,29 @@ function Box(props: Props) {
   })
 
   useLayoutEffect(() => {
-    const ctx = gsap.context(() => {})
-    if (!ref.current) return
-    const direction = props.index % 2 === 0 ? 1 : -1
-    gsap.fromTo(
-      ref.current.position,
-      { y: -2 * direction, repeat: -1, yoyo: true, ease: "power1.inOut"},
-      { y: 2 * direction, repeat: -1, yoyo: true, duration: 4, ease: "power1.inOut"},
-    )
-    gsap.ticker.add(() => {
+    const ctx = gsap.context(() => {
       if (!ref.current) return
-      const intersects = raycaster.intersectObject(ref.current)
-      if (intersects.length > 0) {
-        setColor(secondaryColor)
-      } else {
-        setColor(primaryColor)
-      }
+      const direction = props.index % 2 === 0 ? 1 : -1
+      gsap.fromTo(
+        ref.current.position,
+        { y: -2 * direction, repeat: -1, yoyo: true, ease: "power1.inOut" },
+        {
+          y: 2 * direction,
+          repeat: -1,
+          yoyo: true,
+          duration: 4,
+          ease: "power1.inOut",
+        }
+      )
+      gsap.ticker.add(() => {
+        if (!ref.current) return
+        const intersects = raycaster.intersectObject(ref.current)
+        if (intersects.length > 0) {
+          setColor(secondaryColor)
+        } else {
+          setColor(primaryColor)
+        }
+      })
     })
     return () => {
       ctx.revert()
