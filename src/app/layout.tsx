@@ -7,6 +7,7 @@ import { Nav } from "@/components/Nav"
 import "./globals.css"
 import { Canvas3D } from "@/components/Canvas3D"
 import { Sketch } from "./components/Sketch"
+import { AnimatedTransitionProvider } from "@/context/AnimatedTransitionContext"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -19,17 +20,19 @@ export default function RootLayout(props: PropsWithChildren) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <header className="inline-block relative p-4 bg-gray-800 z-10">
-          <Nav />
-        </header>
-        <section className="fixed inset-0">
-          <Canvas3D>
-            <Sketch />
-          </Canvas3D>
-        </section>
-        <main className="flex min-h-screen flex-col p-4 w-full z-50">
-          {props.children}
-        </main>
+        <AnimatedTransitionProvider>
+          <header className="inline-block relative p-4 bg-gray-800 z-10">
+            <Nav />
+          </header>
+          <section className="fixed inset-0">
+            <Canvas3D>
+              <Sketch />
+            </Canvas3D>
+          </section>
+          <main className="flex min-h-screen flex-col p-4 w-full z-50">
+            {props.children}
+          </main>
+        </AnimatedTransitionProvider>
       </body>
     </html>
   )
