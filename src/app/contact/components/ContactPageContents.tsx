@@ -3,8 +3,8 @@
 import React, { useRef } from "react"
 import gsap from "gsap"
 import {
-  useEnterAnimation,
-  useLeaveAnimation,
+  useEnterTransition,
+  useLeaveTransition,
 } from "@/context/AnimatedTransitionContext"
 
 export function ContactPageContents() {
@@ -12,14 +12,14 @@ export function ContactPageContents() {
   const title = useRef<HTMLDivElement>(null)
   const text = useRef<HTMLDivElement>(null)
 
-  useEnterAnimation(() =>
+  useEnterTransition(() =>
     gsap
       .timeline()
       .add(gsap.fromTo(title.current, { y: 100 }, { y: 0 }))
       .add(gsap.fromTo(text.current, { y: 500 }, { y: 0 }))
   )
 
-  useLeaveAnimation(() =>
+  useLeaveTransition(() =>
     gsap
       .timeline()
       .add(gsap.to(title.current, { y: -100, opacity: 0 }))

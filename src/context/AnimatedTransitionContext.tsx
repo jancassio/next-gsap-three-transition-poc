@@ -1,32 +1,37 @@
 "use client"
 
 import React, { PropsWithChildren, createContext, useLayoutEffect } from "react"
-
 import gsap from "gsap"
 
-const timeline = gsap.timeline({ paused: true })
-const Context = createContext(timeline)
+const contextValue = {
+  timeline: gsap.timeline({ paused: true }),
+}
 
-export function useEnterAnimation(cb: () => gsap.core.Timeline) {
-  const timeline = useAnimatedTransition()
+export type ContextValue = typeof contextValue
+
+const Context = createContext<ContextValue>(contextValue)
+
+export function useEnterTransition(cb: () => gsap.core.Timeline) {
+  const transition = useAnimatedTransition()
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
-      timeline.add(cb())
-      timeline.play()
+      transition.timeline.add(cb())
+      transition.timeline.play()
     })
     return () => {
       ctx.kill()
+      transition.timeline.clear()
     }
   }, [])
 }
 
-export function useLeaveAnimation(cb: () => gsap.core.Timeline) {
-  const timeline = useAnimatedTransition()
+export function useLeaveTransition(cb: () => gsap.core.Timeline) {
+  const transition = useAnimatedTransition()
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
-      timeline.addPause()
-      timeline.add(cb())
-      timeline.play()
+      transition.timeline.addPause()
+      transition.timeline.add(cb())
+      transition.timeline.play()
     })
     return () => {
       ctx.kill()
@@ -39,5 +44,7 @@ export function useAnimatedTransition() {
 }
 
 export function AnimatedTransitionProvider(props: PropsWithChildren) {
-  return <Context.Provider value={timeline}>{props.children}</Context.Provider>
+  return (
+    <Context.Provider value={contextValue}>{props.children}</Context.Provider>
+  )
 }

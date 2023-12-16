@@ -1,13 +1,15 @@
-import { PropsWithChildren } from "react"
+import { PropsWithChildren, useEffect } from "react"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 
+import { AnimatedTransitionProvider } from "@/context/AnimatedTransitionContext"
+import { Canvas3D } from "@/components/Canvas3D"
 import { Nav } from "@/components/Nav"
+import { GSAPRegister } from "@/components/GSAPRegister"
+import { Sketch } from "@/components/Sketch"
 
 import "./globals.css"
-import { Canvas3D } from "@/components/Canvas3D"
-import { Sketch } from "./components/Sketch"
-import { AnimatedTransitionProvider } from "@/context/AnimatedTransitionContext"
+import { FlipStateProvider } from "@/context/FlipStateContext"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -20,19 +22,22 @@ export default function RootLayout(props: PropsWithChildren) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <AnimatedTransitionProvider>
-          <header className="inline-block relative p-4 bg-gray-800 z-10">
-            <Nav />
-          </header>
-          <section className="fixed inset-0">
-            <Canvas3D>
-              <Sketch />
-            </Canvas3D>
-          </section>
-          <main className="flex min-h-screen flex-col p-4 w-full z-50">
-            {props.children}
-          </main>
-        </AnimatedTransitionProvider>
+        <GSAPRegister />
+        <FlipStateProvider>
+          <AnimatedTransitionProvider>
+            <header className="inline-block relative p-4 bg-gray-800 z-10">
+              <Nav />
+            </header>
+            <section className="fixed inset-0">
+              <Canvas3D>
+                <Sketch />
+              </Canvas3D>
+            </section>
+            <main className="flex min-h-screen flex-col p-4 w-full z-50">
+              {props.children}
+            </main>
+          </AnimatedTransitionProvider>
+        </FlipStateProvider>
       </body>
     </html>
   )
